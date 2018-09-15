@@ -35,7 +35,14 @@ public class Cards {
 				Card newCard = new Card();
 				str += suit;
 				if(value == 1) str += ("A");	
-				else str += value;
+				else if (value > 10) {
+					if (value == 11) str += "J";
+					else if (value == 12) str += "Q";
+					else str += "K";
+				}
+				else
+					str += value;
+				
 				newCard.setName(str);
 				str = "";
 				cards.add(newCard);
@@ -59,4 +66,6 @@ public class Cards {
 		setCards();
 		shuffling();
 	}
+
+
 }

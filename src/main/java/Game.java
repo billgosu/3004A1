@@ -2,10 +2,8 @@
 public class Game {
 	private User user;
 	private Dealer dealer;
-	private Cards cards;
 	
 	public Game() {
-		cards = new Cards();
 		user = new User();
 		dealer = new Dealer();	
 	}
@@ -15,9 +13,11 @@ public class Game {
 	
 	public void defineWinner() {
 		if((user.getPoint() > 21 && dealer.getPoint() <= 21) ||
-			(user.getPoint() == 21 && dealer.getPoint() == 21))
+			(user.getPoint() == 21 && dealer.getPoint() == 21)||
+			dealer.getPoint() == 21)
 			dealer.setWinner();
-		else if (user.getPoint() > 21 && user.getPoint() < 21)
+		else if ((dealer.getPoint() > 21 && user.getPoint() <= 21)||
+				user.getPoint() == 21)
 			user.setWinner();
 		else if (user.isStand() && dealer.isStop()) {
 			if(user.getPoint() < dealer.getPoint()) dealer.setWinner();

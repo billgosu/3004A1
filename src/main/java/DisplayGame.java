@@ -36,9 +36,9 @@ public class DisplayGame extends Application {
 	private MenuItem inputFile;
 	private MenuBar menuBar;
 	private Image[] images;
+	private Cards cards;
 	private Image backGround;
 	private ImageView imageView;
-	private Cards cards;
 	private Game game;
 	private int user_x = 400, user_y = 450,
 			dealer_x = 400,dealer_y = 150, checkingPlayerOrDealer = 99;
@@ -106,8 +106,8 @@ public class DisplayGame extends Application {
 	private void displayGameCards(Pane aPane) {
 		reset();
 		aPane.getChildren().remove(imageView);
-		cards = new Cards();
 		game = new Game();
+		cards = new Cards();
 		Image card;
 		ImageView viewCard;
 		checkingPlayerOrDealer = 0;
@@ -145,10 +145,10 @@ public class DisplayGame extends Application {
 	private void displayGameCardsOnFile(ArrayList<String> s) {
 		//aPane.getChildren().remove(imageView);
 		cards = new Cards();
+		game = new Game();
 		Image card;
 		checkingPlayerOrDealer = 10;
 		ImageView viewCard = null;
-		
 		for(int i = 0; i < s.size(); i++) {
 			Card checkCard = new Card();
 			int value = 0;
@@ -178,6 +178,7 @@ public class DisplayGame extends Application {
 				b += s.get(i).charAt(0);
 				card = new Image(b + ".jpg");
 				viewCard = new ImageView(card);
+				checkCard.setName(s.get(i));
 				if((i < 2) ||(checkingPlayerOrDealer == 1) ) {
 					game.getUser().addCard(checkCard,0);
 					viewCard.relocate(user_x, user_y);
@@ -210,6 +211,8 @@ public class DisplayGame extends Application {
 					
 		}
 		//define winner;
+		game.getUser().setStand();;
+		game.getDealer().setStop();
 		game.defineWinner();
 		//report winner to users.
 		announcement();
@@ -245,6 +248,7 @@ public class DisplayGame extends Application {
 		ImageView viewCard;
 		hitButton.setDisable(true);
 		displayInvisibleCard();
+		game.getUser().setStand();
 		
 			while(game.getDealer().canHit()) {
 				Image card = new Image(getCardLocation(cards.getCard(0)));
@@ -258,13 +262,12 @@ public class DisplayGame extends Application {
 				aPane.getChildren().addAll(viewCard);
 				dealer_x += 35;
 				cards.remove(0);
-				
 			}
+		game.getDealer().setStop();
 		// using defineWinner function to find winner()
 		game.defineWinner();
 		//report winner if we have one.
 		announcement();
-		//drawing case.
 		
 	};
 	
@@ -289,8 +292,8 @@ public class DisplayGame extends Application {
 	//using card' points and quality to get card'id in resources
 	private String getCardLocation(Card card) {
 		String id = "",quality = "";
-		quality +=  cards.getCard(0).getName().charAt(0);
-		id += cards.getCard(0).getName().substring(1, cards.getCard(0).getName().length());
+		quality +=  card.getName().charAt(0);
+		id += card.getName().substring(1, card.getName().length());
 		id += quality + ".jpg";	
 		return id;
 	}
@@ -300,12 +303,18 @@ public class DisplayGame extends Application {
 		alert.setTitle("Winner Identify");
 		Optional<ButtonType> result = null;
 		if(game.getDealer().isWin()) {
+			if(game.getDealer().getCard(0).size() == 2) {
+				displayInvisibleCard();
+			}
 			alert.setHeaderText("THE DEALER WON");
 			alert.setContentText("The Dealer has " + game.getDealer().getPoint() + " point.\n You have "
 					+ game.getUser().getPoint() + "\nThis is just a bad luck, try another. Good Luck next time");
 			result = alert.showAndWait();
 		}
-		else{
+		else if (game.getUser().isWin()){
+			if(game.getUser().getCard(0).size() == 2) {
+				displayInvisibleCard();
+			}
 			alert.setHeaderText("YOU WON");
 			alert.setContentText("The Dealer has " + game.getDealer().getPoint() + " point.\n You have "
 					+ game.getUser().getPoint() + "\n.CONGRATULATION");
@@ -363,6 +372,7 @@ public class DisplayGame extends Application {
 	public void reset() {
 		aPane.getChildren().clear();
 		setup();
+		game = new Game();
 	    user_x = 400;user_y = 450;
 		dealer_x = 400;dealer_y = 150; 
 		checkingPlayerOrDealer = 99;

@@ -8,12 +8,16 @@ public class Player {
 	protected ArrayList<ArrayList<Card>> cardOwning;
 	protected boolean iswin;
 	protected boolean split;
+	protected boolean changeAcesValue1;
+	protected boolean changeAcesValue2;
 	
 	public Player() {
 		cardOwning = new ArrayList<ArrayList<Card>>();
 		cardOwning.add(new ArrayList<Card>());
 		iswin = false;
 		split = false;
+		changeAcesValue1 = false;
+		changeAcesValue2 = false;
 		point = 0;
 		splitPoint = 0;
 		hands = 1;
@@ -37,27 +41,31 @@ public class Player {
 		char str = c.getName().charAt(1);
 		if(str == '1' || str == 'J' || str == 'Q' || str == 'K') point += 10;
 		else if (str == 'A') {
-			if(!containsAces() && cardOwning.get(0).size() < 2) {
-				if(i == 0) point += 11;
-				else splitPoint += 11;
-			}
-			else if (containsAces() && cardOwning.get(0).size() < 2) {
-				if(i == 0) point -= 9;
-				else splitPoint -=9;
-			}
-			else if (!containsAces() && cardOwning.get(0).size() > 2) {
-				if(i == 0) {
-					if(point > 10) point+= 1;
-					else point += 11;
+			if(i == 0) {
+				if(containsAces() == 0 && (point + 11 <= 21))	point += 11;
+				else point += 1;
+			
+				if(containsAces() == 1 && !changeAcesValue1) { 
+					point -= 9;
+					changeAcesValue1 = true;
 				}
-				else {
-					if(splitPoint > 10) splitPoint+= 1;
-					else splitPoint += 11;
-				}
+				else if (containsAces() == 1) point += 1;
+				
+				if(containsAces() == 2) point += 1;
+				if(containsAces() == 3) point += 1;	
 			}
-			else { 
-				if(i ==0) point -= 9;
-				else splitPoint -= 9;
+			if(i == 1) {
+				if(containsAces() == 0 && (splitPoint + 11 <= 21))		splitPoint += 11;
+				else splitPoint += 1;
+				
+				if(containsAces() == 1 && !changeAcesValue2) { 
+					splitPoint -= 9;
+					changeAcesValue2 = true;
+				}
+				else if (containsAces() == 1) splitPoint += 1;
+				
+				if(containsAces() == 2) splitPoint += 1;
+				if(containsAces() == 3) splitPoint += 1;	
 			}
 		}
 		else {
@@ -65,19 +73,30 @@ public class Player {
 			else  splitPoint += Character.getNumericValue(str);
 		}
 		cardOwning.get(i).add(c);
+		if(i == 0) {
+			if(!changeAcesValue1 && containsAces() == 1 && point > 21) {
+				point = Math.min(point-10, point);
+				changeAcesValue1 = true;
+				}
+		}
+		if(i == 1) {
+			if(!changeAcesValue2 && containsAces() == 1 && point > 21) {
+				point = Math.min(point-10, point);
+				changeAcesValue2 = true;
+				}
+		}
 		
 	}
 	
-	public boolean containsAces() {
+	public int containsAces() {
+		int num = 0;
 		for(int i =0; i < cardOwning.get(0).size(); i++) {
-			if(cardOwning.get(0).get(i).getName().equals("HA")||
-				cardOwning.get(0).get(i).getName().equals("CA")||
-				cardOwning.get(0).get(i).getName().equals("DA")||
-				cardOwning.get(0).get(i).getName().equals("SA")) {
-				return true;
-			}
+			if((cardOwning.get(0).get(i).getName().equals("HA"))) num++;
+			else if (cardOwning.get(0).get(i).getName().equals("CA")) num++;
+			else if (cardOwning.get(0).get(i).getName().equals("DA")) num++;
+			else if (cardOwning.get(0).get(i).getName().equals("SA")) num++;
 		}
-		return false;
+		return num;
 	}
 
 	

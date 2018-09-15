@@ -14,11 +14,6 @@ public class Game {
 	public Dealer getDealer() {return dealer;}
 	
 	public void defineWinner() {
-		if(user.isSplit()) 
-			user.setPoint(Math.max(user.getSplitPoint(), user.getSplitPoint()));
-		if(dealer.isSplit())
-			dealer.setPoint(Math.max(dealer.getSplitPoint(), dealer.getSplitPoint()));
-			
 		if((user.getPoint() > 21 && dealer.getPoint() <= 21) ||
 			(user.getPoint() == 21 && dealer.getPoint() == 21))
 			dealer.setWinner();

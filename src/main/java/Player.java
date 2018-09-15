@@ -29,7 +29,6 @@ public class Player {
 	public boolean isWin() { return iswin;}
 	public int getHands() {return hands;}
 	public boolean isSplit() {return split;}
-	public int getPoint() {return point;}
 	public ArrayList<Card> getCard(int i){
 		return cardOwning.get(i);
 	}
@@ -83,9 +82,31 @@ public class Player {
 
 	
 	public void canSplit() {
-		for(int i =0; i < 2; i++) {
+		if(cardOwning.get(0).get(0).getName().charAt(1) == 
+			cardOwning.get(0).get(1).getName().charAt(1)) {
+			split = true;
 		}
+		else return;
+		
+		if(split == true) {
+			cardOwning.add(new ArrayList<Card>());
+			cardOwning.get(1).add(cardOwning.get(0).get(1));
+			cardOwning.get(0).remove(1);
+			splitPoint = point/2;
+			point = splitPoint;
+		}	
 	}
+	public int getPoint() {
+		if(split) {
+			if(splitPoint > 21 && point < 21) return point;
+			else if (splitPoint < 21 && point > 21) return splitPoint;
+			else {
+				return Math.max(splitPoint, point);
+			}
+		}
+		
+		else
+			return point;}
 	
 	
 	

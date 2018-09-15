@@ -93,15 +93,49 @@ public class Test extends TestCase {
 		Game game = new Game();
 		card.setName("DQ");
 		card1.setName("SQ");
-		card2.setName("S9");
+		card2.setName("S10");
 		card3.setName("H5");
 		game.getUser().addCard(card, 0);
 		game.getUser().addCard(card1, 0);
 		game.getUser().canSplit();
-		game.getUser().addCard(card2, 1);
+		game.getUser().addCard(card2, 0);
+		Card card4 = new Card();
+		card4.setName("S6");
+		game.getUser().addCard(card2, 0);
+		game.getUser().addCard(card4, 0);
 		game.getUser().addCard(card3, 1);
-		assertTrue(19 == game.getUser().getPoint());
+		assertTrue(15 == game.getUser().getPoint());
 	}
+	public void testDealerStandOrNot() {
+		Game game = new Game();
+		Card card = new Card();
+		card.setName("HJ");
+		Card card1 = new Card();
+		card1.setName("H6");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		assertTrue(true == game.getDealer().canHit());
+		
+		game = new Game();
+		card = new Card();
+		card.setName("HA");
+		card.setName("C6");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		assertTrue(true == game.getDealer().canHit());
+		
+		game = new Game();
+		card = new Card();
+		card.setName("HK");
+		card.setName("C7");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		assertTrue(false == game.getDealer().canHit());
+		
+		
+	}
+	
+	
 	
 	
 	

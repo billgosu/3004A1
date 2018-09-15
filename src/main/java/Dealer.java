@@ -10,4 +10,7 @@ public class Dealer extends Player{
 	
 	public boolean isStop() {return stop;}
 	public void setStop() {stop = true;}
+	public boolean canHit() {
+		return false;
+	}
 }

@@ -11,5 +11,4 @@ public class User extends Player {
 	private void setHit() {hit = true;}
 	
 	public boolean isStand() {return stand;}
-
 }

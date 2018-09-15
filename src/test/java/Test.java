@@ -49,17 +49,17 @@ public class Test extends TestCase {
 		Card card = new Card();
 		Card card1 = new Card();
 		card.setName("S10");
-		
 		card1.setName("D9");
 		
 		Game game = new Game();
-		game.getDealer().addCard(card);
-		game.getDealer().addCard(card1);
+		game.getDealer().addCard(card,0);
+		game.getDealer().addCard(card1,0);
 		assertTrue(19 == game.getDealer().getPoint());
+
+		game.getUser().addCard(card,0);
+		game.getUser().addCard(card1,0);
+		assertTrue((int)19 == game.getUser().getPoint());
 		
-		game.getUser().addCard(card);
-		game.getUser().addCard(card1);
-		assertTrue(19 == game.getDealer().getPoint());
 	}
 	
 	public void testAddAcesMethodForUser() {
@@ -68,8 +68,8 @@ public class Test extends TestCase {
 		Card card1 = new Card();
 		card1.setName("DJ");
 		Game game = new Game();
-		game.getUser().addCard(card);
-		game.getUser().addCard(card1);
+		game.getUser().addCard(card,0);
+		game.getUser().addCard(card1,0);
 		assertTrue(21 == game.getUser().getPoint());	
 	}
 	
@@ -80,10 +80,30 @@ public class Test extends TestCase {
 		Card card1 = new Card();
 		card1.setName("DJ");
 		Game game = new Game();
-		game.getDealer().addCard(card);
-		game.getDealer().addCard(card1);
-		assertTrue(21 == game.getUser().getPoint());
+		game.getDealer().addCard(card,0);
+		game.getDealer().addCard(card1,0);
+		assertTrue(21+0 == game.getDealer().getPoint());
 	}
+	
+	public void testUserAndDealerSpliting() {
+		Card card = new Card();
+		Card card1 = new Card();
+		Card card2 = new Card();
+		Card card3 = new Card();
+		Game game = new Game();
+		card.setName("DQ");
+		card1.setName("SQ");
+		card2.setName("S9");
+		card3.setName("H5");
+		game.getUser().addCard(card, 0);
+		game.getUser().addCard(card1, 0);
+		game.getUser().canSplit();
+		game.getUser().addCard(card2, 1);
+		game.getUser().addCard(card3, 1);
+		assertTrue(19 == game.getUser().getPoint());
+	}
+	
+	
 	
 	
 	

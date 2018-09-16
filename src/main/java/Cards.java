@@ -8,11 +8,10 @@ public class Cards {
 	
 	// return cards	
 	public Card getCard(int i ) {return cards.get(i);}
-	
+	//return cards size
 	public int getSize() {return cards.size();}
-	
+	// index of card x
 	public int Indexof(Card a) {return cards.indexOf(a);}
-
 	public void remove(int i) {		cards.remove(i);}
 	
 	// set Card' values
@@ -49,7 +48,7 @@ public class Cards {
 			}
 		}
 	}
-	
+	//function to shuffling card
 	public void shuffling () {
 		for(int u =0; u < 5; u++) {
 			for(int i =0; i < cards.size();i++) {

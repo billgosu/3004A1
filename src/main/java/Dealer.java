@@ -10,7 +10,7 @@ public class Dealer extends Player{
 	
 	public boolean isStop() {return stop;}
 	public void setStop() {stop = true;}
-
+	//function to check that dealer continuous hitting card or stop 
 	public boolean canHit() {
 		if(point < 17)	return true;
 		else {
@@ -20,6 +20,7 @@ public class Dealer extends Player{
 		}
 	
 	}
+	//function to help calculate point
 	public boolean containsAces(int i) {
 		for(int u =0; u < this.getCard(u).size();u++) {
 			if((this.getCard(i).get(u).getName() == "HA") ||

@@ -6,7 +6,7 @@ public class User extends Player {
 		super();
 		stand = false;
 	}
-	
+	//some functions to decide user hit or stand
 	public void setStand() {stand = true;}
 	private void setHit() {hit = true;}
 	

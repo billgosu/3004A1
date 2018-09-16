@@ -28,6 +28,7 @@ public class DisplayGame extends Application {
 	private Button hitButton;
 	private Button standButton;
 	private Button restartButton;
+	private Button splitButton;
 	private Pane aPane;
 	private GridPane grid;
 	private Menu playmode;
@@ -88,6 +89,12 @@ public class DisplayGame extends Application {
 				hitButtonHandler(aPane);
 			}});
 		
+		//set action on hitButton
+			splitButton.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					splitButtonHandler(aPane);
+				}});
+		
 
 		//set action on restartButton
 		restartButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -139,7 +146,11 @@ public class DisplayGame extends Application {
 			cards.remove(0);	
 		}
 		game.defineWinner();
-		announcement();
+		announcement();;
+		if(game.getUser().isSplit()) {
+			  grid.add(splitButton,38,65,1,1);
+		}
+		
 	}
 	
 	private void displayGameCardsOnFile(ArrayList<String> s) {
@@ -321,6 +332,11 @@ public class DisplayGame extends Application {
 			result = alert.showAndWait();	
 		}
 	}
+	private void splitButtonHandler(Pane apane) {
+		game.getUser().doSplit();
+		
+		
+	}
 	
 	private void pickFile() {
 		// TODO Auto-generated method stub
@@ -394,19 +410,25 @@ public class DisplayGame extends Application {
 		//reset mode
 		 reset = new Menu("reset");
 		
-		//add the hitButton
+		//create the hitButton
 		 hitButton = new Button("Hit");
 		 hitButton.setMinHeight(30);
 		 hitButton.setMinWidth(100);
 		 hitButton.setPrefWidth(100);
+		 
+		 //create the splitButton
+		 splitButton = new Button("Split");
+		 splitButton.setMinHeight(30);
+		 splitButton.setMinWidth(100);
+		 splitButton.setPrefWidth(100);
 		
-		 //add holdButton
+		 //create holdButton
 		 standButton = new Button("Stand");
 		 standButton.setMinHeight(30);
 		 standButton.setMinWidth(100);
 		 standButton.setPrefWidth(100);
 		 
-		//add restartButton
+		//create restartButton
 		 restartButton = new Button("restart");
 		 restartButton.setMinHeight(30);
 		 restartButton.setMinWidth(100);

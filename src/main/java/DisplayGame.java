@@ -122,12 +122,11 @@ public class DisplayGame extends Application {
 			card = new Image(getCardLocation(cards.getCard(0)));
 			viewCard = new ImageView(card);
 			
-			if(i == 2) {
-				viewCard = new ImageView("Red_back.jpg");
-			}
 			if(checkingPlayerOrDealer == 0) {
 				game.getDealer().addCard((cards.getCard(0)),0);
 				checkingPlayerOrDealer = 1;
+				if (!cards.getCard(0).getVisible())
+					viewCard = new ImageView("Red_back.jpg");
 				viewCard.relocate(dealer_x, dealer_y);
 				dealer_x += 35;
 			}
@@ -334,7 +333,6 @@ public class DisplayGame extends Application {
 	}
 	private void splitButtonHandler(Pane apane) {
 		game.getUser().doSplit();
-		
 		
 	}
 	

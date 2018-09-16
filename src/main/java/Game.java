@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Game {
 	private User user;
@@ -20,15 +22,22 @@ public class Game {
 	public void defineWinner() {
 		if((user.getPoint() > 21 && dealer.getPoint() <= 21) ||
 			(user.getPoint() == 21 && dealer.getPoint() == 21)||
-			dealer.getPoint() == 21)
-			dealer.setWinner();
+			dealer.getPoint() == 21) {
+			dealer.getCard(0).get(1).setVisible(true);
+			dealer.setWinner();}
 		else if ((dealer.getPoint() > 21 && user.getPoint() <= 21)||
-				user.getPoint() == 21)
+				user.getPoint() == 21) {
 			user.setWinner();
+			dealer.getCard(0).get(1).setVisible(true);
+		}
 		else if (user.isStand() && dealer.isStop()) {
-			if(user.getPoint() < dealer.getPoint()) dealer.setWinner();
-			else user.setWinner();
-		}	
+			if(user.getPoint() < dealer.getPoint())
+				dealer.setWinner();
+			else if (user.getPoint() > dealer.getPoint())
+				user.setWinner();
+			
+			dealer.getCard(0).get(1).setVisible(true);
+		}
 }
 	
 	

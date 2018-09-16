@@ -27,9 +27,69 @@ public class Test extends TestCase {
 		assertTrue(true == game.hasInput());
 	}
 	
-	public void testCardInvisible() {
+	public void testCardInvisibleForUser() {
 		Game game = new Game();
-		
+		Card card = new Card();
+		card.setName("H6");
+		Card card1 = new Card();
+		card1.setName("H10");
+		game.getUser().addCard(card, 0);
+		game.getUser().addCard(card1, 0);
+		assertTrue(true == card.getVisible());
+		assertTrue(true == card1.getVisible());
+	}
+	
+	public void testCardInvisibleForDealer() {
+		Game game = new Game();
+		Card card = new Card();
+		card.setName("H6");
+		Card card1 = new Card();
+		card1.setName("H10");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		assertTrue(true == card.getVisible());
+		assertTrue(false == card1.getVisible());
+	}
+	
+	public void testAtTheEndCardOfDealerDisplay() {
+		Game game = new Game();
+		Card card = new Card();
+		card.setName("HA");
+		Card card1 = new Card();
+		card1.setName("H10");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		Card card2 = new Card();
+		Card card3 = new Card();
+		card2.setName("C9");
+		card2.setName("S9");
+		game.defineWinner();
+		assertTrue(true == game.getDealer().getCard(0).get(1).getVisible());
+	}
+	
+	
+	
+	
+	public void testDealerCanHit() {
+		Game  game =  new Game();
+		Card card = new Card();
+		Card card1 = new Card();
+		card.setName("H6");
+		card1.setName("S10");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		assertTrue(true == game.getDealer().canHit());
+	}
+	
+	public void testDealerCanHit2() {
+		Game  game =  new Game();
+		Card card = new Card();
+		Card card1 = new Card();
+		card.setName("H5");
+		card1.setName("SA");
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		assertTrue(true == game.getDealer().canHit());
 	}
 	
 	public void test_JKQ_value() {
@@ -51,8 +111,18 @@ public class Test extends TestCase {
 
 	public void testBothBlackJack() {
 		Game game = new Game();
-		game.getUser().setPoint(21);
-		game.getDealer().setPoint(21);
+		Card card = new Card();
+		Card card1 = new Card();
+		Card card2 = new Card();
+		Card card3 = new Card();
+		card.setName("HA");
+		card1.setName("CA");
+		card2.setName("SQ");
+		card3.setName("CQ");
+		game.getUser().addCard(card, 0);
+		game.getUser().addCard(card2, 0);
+		game.getDealer().addCard(card1, 0);
+		game.getDealer().addCard(card3, 0);
 		game.defineWinner();
 		assertTrue(true == game.getDealer().isWin());
 		assertTrue(false == game.getUser().isWin());
@@ -60,8 +130,18 @@ public class Test extends TestCase {
 	
 	public void testPlayerBlackJack() {
 		Game game = new Game();
-		game.getUser().setPoint(21);
-		game.getDealer().setPoint(20);
+		Card card = new Card();
+		Card card1 = new Card();
+		Card card2 = new Card();
+		Card card3 = new Card();
+		card.setName("HA");
+		card1.setName("C9");
+		card2.setName("SQ");
+		card3.setName("CQ");
+		game.getUser().addCard(card, 0);
+		game.getUser().addCard(card2, 0);
+		game.getDealer().addCard(card1, 0);
+		game.getDealer().addCard(card3, 0);
 		game.defineWinner();
 		assertTrue(true == game.getUser().isWin());
 		assertTrue(false == game.getDealer().isWin());
@@ -69,8 +149,18 @@ public class Test extends TestCase {
 	
 	public void testDealerBlackJack() {
 		Game game = new Game();
-		game.getUser().setPoint(20);
-		game.getDealer().setPoint(21);
+		Card card = new Card();
+		Card card1 = new Card();
+		Card card2 = new Card();
+		Card card3 = new Card();
+		card.setName("HA");
+		card1.setName("C9");
+		card2.setName("SQ");
+		card3.setName("CQ");
+		game.getUser().addCard(card1, 0);
+		game.getUser().addCard(card3, 0);
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card2, 0);
 		game.defineWinner();
 		assertTrue(true == game.getDealer().isWin());
 		assertTrue(false == game.getUser().isWin());
@@ -82,79 +172,76 @@ public class Test extends TestCase {
 		Card card1 = new Card();
 		Card card2 = new Card();
 		Card card3 = new Card();
-		card.setName("S9");
 		card1.setName("H8");
 		card2.setName("SA");
 		card3.setName("HA");
 		Game game = new Game();
-		game.getUser().addCard(card, 0);
 		game.getUser().addCard(card1, 0);
 		game.getUser().addCard(card2, 0);
 		game.getUser().addCard(card3, 0);
-		System.out.println(game.getUser().getPoint());
+		assertTrue(20 == game.getUser().getPoint());
+		
+		game = new Game();
+		card.setName("H8");
+		card1.setName("S9");
+		card2.setName("SA");
+		card3.setName("HA");
+		game.getUser().addCard(card1, 0);
+		game.getUser().addCard(card2, 0);
+		game.getUser().addCard(card3, 0);
+		game.getUser().addCard(card, 0);
 		assertTrue(19 == game.getUser().getPoint());
+		
+		game = new Game();
+		card.setName("SA");
+		card1.setName("H5");
+		card2.setName("DA");
+		card3.setName("C10");
+		game.getUser().addCard(card1, 0);
+		game.getUser().addCard(card2, 0);
+		game.getUser().addCard(card3, 0);
+		game.getUser().addCard(card, 0);
+		assertTrue(17 == game.getUser().getPoint());
+		
 		
 		
 	}
 	
 	public void testBothStandCountingPoint() {
 		Game game = new Game();
-		game.getUser().setPoint(20);
-		game.getDealer().setPoint(19);
+		Card card = new Card();
+		Card card1 = new Card();
+		Card card2 = new Card();
+		Card card3 = new Card();
+		card.setName("S9");
+		card1.setName("H8");
+		card2.setName("H9");
+		card3.setName("C9");
+		
+		game.getUser().addCard(card, 0);
+		game.getUser().addCard(card1, 0);
+		game.getDealer().addCard(card2, 0);
+		game.getDealer().addCard(card3, 0);
+		
 		game.getUser().setStand();
 		game.getDealer().setStop();
 		game.defineWinner();
-		assertTrue(false  == game.getDealer().isWin());
+		assertTrue(true  == game.getDealer().isWin());
+		assertTrue(false == game.getUser().isWin());
+		
+		game = new Game();
+		game.getUser().addCard(card2, 0);
+		game.getUser().addCard(card3, 0);
+		game.getDealer().addCard(card, 0);
+		game.getDealer().addCard(card1, 0);
+		game.getUser().setStand();
+		game.getDealer().setStop();
+		game.defineWinner();
+		assertTrue(false == game.getDealer().isWin());
 		assertTrue(true == game.getUser().isWin());
 		
-		game.getUser().setPoint(19);
-		game.getDealer().setPoint(20);
-		game.defineWinner();
-	
-		assertTrue(true == game.getDealer().isWin());
-		assertFalse(false == game.getUser().isWin());
-		
 	}
 	
-	public void testingAddPointDealerAndPlayer() {
-		Card card = new Card();
-		Card card1 = new Card();
-		card.setName("S10");
-		card1.setName("D9");
-		
-		Game game = new Game();
-		game.getDealer().addCard(card,0);
-		game.getDealer().addCard(card1,0);
-		assertTrue(19 == game.getDealer().getPoint());
-
-		game.getUser().addCard(card,0);
-		game.getUser().addCard(card1,0);
-		assertTrue((int)19 == game.getUser().getPoint());
-		
-	}
-	
-	public void testAddAcesMethodForUser() {
-		Card card = new Card();
-		card.setName("HA");
-		Card card1 = new Card();
-		card1.setName("DJ");
-		Game game = new Game();
-		game.getUser().addCard(card,0);
-		game.getUser().addCard(card1,0);
-		assertTrue(21 == game.getUser().getPoint());	
-	}
-	
-
-	public void testAddAcesMethodforDealer() {
-		Card card = new Card();
-		card.setName("HA");
-		Card card1 = new Card();
-		card1.setName("DJ");
-		Game game = new Game();
-		game.getDealer().addCard(card,0);
-		game.getDealer().addCard(card1,0);
-		assertTrue(21+0 == game.getDealer().getPoint());
-	}
 	
 	public void testUserAndDealerSpliting() {
 		Card card = new Card();
@@ -190,7 +277,7 @@ public class Test extends TestCase {
 		game = new Game();
 		card = new Card();
 		card.setName("HA");
-		card.setName("C6");
+		card1.setName("C6");
 		game.getDealer().addCard(card, 0);
 		game.getDealer().addCard(card1, 0);
 		assertTrue(true == game.getDealer().canHit());
@@ -198,12 +285,39 @@ public class Test extends TestCase {
 		game = new Game();
 		card = new Card();
 		card.setName("HK");
-		card.setName("C7");
+		card1.setName("C7");
 		game.getDealer().addCard(card, 0);
 		game.getDealer().addCard(card1, 0);
 		assertTrue(false == game.getDealer().canHit());
-		
-		
+			
+	}
+	public void testPlayerCanHit() {
+		Game game = new Game();
+		assertTrue(false == game.getUser().isStand());
+		Card card = new Card();
+		card.setName("H6");
+		game.getUser().addCard(card, 0);
+		assertTrue(false == game.getUser().isStand());
+		game.getUser().setStand();
+		assertTrue(true == game.getUser().isStand());
+	}
+	public void testPlayerBust() {
+		Game game = new Game();
+		Card card = new Card();
+		Card card1 = new Card();
+		Card card2 = new Card();
+		card.setName("SK");
+		card1.setName("SQ");
+		card2.setName("SJ");
+		game.getUser().addCard(card, 0);
+		game.getUser().addCard(card1, 0);
+		game.getUser().addCard(card2, 0);
+		game.getDealer().addCard(card,0);
+		game.getDealer().addCard(card1,0);
+		game.defineWinner();
+		assertTrue(false == game.getUser().isWin());
+		assertTrue(true == game.getDealer().isWin());
+	
 	}
 	
 	

@@ -43,6 +43,7 @@ public class Cards {
 					str += value;
 				
 				newCard.setName(str);
+				newCard.setVisible(true);
 				str = "";
 				cards.add(newCard);
 			}

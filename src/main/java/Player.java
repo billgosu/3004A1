@@ -42,19 +42,19 @@ public class Player {
 	public void addCard(Card c, int i) {
 		char str = c.getName().charAt(1);
 		if(i == 0) { point = addPoint(str,point);
-			if(point > 21 && containAces(0) > 0) {
+			if(point > 21 && containAces(i) > 0) {
 				if(!changeAcesValue) {
-					if(containAces(0) == 1) point -= 10;
-					else if (containAces(0)== 2) point -= 10;
+					if(containAces(i) == 1) point -= 10;
+					else if (containAces(i)== 2) point -= 10;
 					changeAcesValue = true;
 				}
 			}
 		}
 		else { splitPoint = addPoint(str,splitPoint);
-			if(splitPoint > 21 && containAces(1) > 0) {
+			if(splitPoint > 21 && containAces(i) > 0) {
 				if(!changeAcesValue) {
-					if(containAces(1) == 1) splitPoint -= 10;
-					else if (containAces(1)== 2) point -= 10;
+					if(containAces(i) == 1) splitPoint -= 10;
+					else if (containAces(i)== 2) point -= 10;
 					changeAcesValue = true;
 				}
 			}

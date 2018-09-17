@@ -65,7 +65,7 @@ public class Player {
 		if(str == '1' || str == 'J' || str == 'Q' || str == 'K') i += 10;
 		else if (str == 'A') {
 			if(i + 11 > 21) {
-				if(containAces(i) == 0) {
+				if(containAces(0) == 0) {
 					changeAcesValue = true;
 					i += 1;
 				}

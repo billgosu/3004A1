@@ -13,6 +13,14 @@ public class Cards {
 	// index of card x
 	public int Indexof(Card a) {return cards.indexOf(a);}
 	public void remove(int i) {		cards.remove(i);}
+	public void remove(Card i) {
+		for(int u =0; u < cards.size();u++) {
+			if(cards.get(u).getName().equals(i.getName())) {
+				cards.remove(cards.get(u));
+				return;
+			}
+		}
+	}
 	
 	// set Card' values
 	public void setCards() {
@@ -65,6 +73,13 @@ public class Cards {
 		cards = new ArrayList<Card>();
 		setCards();
 		shuffling();
+	}
+	public boolean contain(Card u) {
+		for(int i =0; i < cards.size();i++) {
+			if(cards.get(i).getName().equals(u.getName()))
+				return true;
+		}
+		return false;
 	}
 
 

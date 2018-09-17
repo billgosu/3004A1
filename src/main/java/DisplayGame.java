@@ -159,6 +159,18 @@ public class DisplayGame extends Application {
 		Image card;
 		checkingPlayerOrDealer = 10;
 		ImageView viewCard = null;
+		
+		for(int i =0; i < s.size();i++) {
+			int rept = 0;
+			for(int u =0; u < s.size();u++) {
+				if (s.get(i).equals(s.get(u)) && (s.get(i).length() >= 2))
+					rept++;
+			}
+			if(rept >= 2) {
+				invalidInput();
+			}
+		}
+		
 		for(int i = 0; i < s.size(); i++) {
 			Card checkCard = new Card();
 			int value = 0;
@@ -180,42 +192,44 @@ public class DisplayGame extends Application {
 				b += s.get(i).charAt(0);
 				b = "";
 			
-				if(s.get(i).charAt(1) == '1')
-					b+= "10";
-				else
-					b += s.get(i).charAt(1);
-				
+				if(s.get(i).charAt(1) == '1')	b+= "10";
+				else b += s.get(i).charAt(1);
+			
 				b += s.get(i).charAt(0);
-				card = new Image(b + ".jpg");
-				viewCard = new ImageView(card);
 				checkCard.setName(s.get(i));
-				if((i < 2) ||(checkingPlayerOrDealer == 1) ) {
-					game.getUser().addCard(checkCard,0);
-					viewCard.relocate(user_x, user_y);
-					user_x += 35;
+				if(!cards.contain(checkCard))
+				{
+					invalidInput();
+					return;
 				}
-				else if((i >= 2 && i < 4) ||(checkingPlayerOrDealer == 0)) {
-					game.getDealer().addCard(checkCard,0);
-					viewCard.relocate(dealer_x, dealer_y);
-					dealer_x += 35;
+				else {
+					cards.remove(checkCard);
+					card = new Image(b + ".jpg");
+					viewCard = new ImageView(card);
+					if((i < 2) ||(checkingPlayerOrDealer == 1) ) {
+						game.getUser().addCard(checkCard,0);
+						viewCard.relocate(user_x, user_y);
+						user_x += 35;
+					}
+					else if((i >= 2 && i < 4) ||(checkingPlayerOrDealer == 0)) {
+						game.getDealer().addCard(checkCard,0);
+						viewCard.relocate(dealer_x, dealer_y);
+						dealer_x += 35;
+					}
+					viewCard.setFitWidth(100);
+					viewCard.setFitHeight(150);
+					viewCard.setPreserveRatio(true);
+					aPane.getChildren().addAll(viewCard);
 				}
-				viewCard.setFitWidth(100);
-				viewCard.setFitHeight(150);
-				viewCard.setPreserveRatio(true);
-				aPane.getChildren().addAll(viewCard);
-				}
+			}
 			else {
 				if(s.get(i).equals("H")) {
 					checkingPlayerOrDealer = 1;}
 				else if(s.get(i).equals("S")){
 					checkingPlayerOrDealer = 0;}
 				else {
-					Alert alert = new Alert(Alert.AlertType.WARNING);
-					alert.setTitle("WARNING");
-					alert.setContentText("your input is invalid");
-					alert.showAndWait();
-					reset();
-					return;
+					invalidInput();
+					return;	
 				}
 			}
 					
@@ -226,6 +240,14 @@ public class DisplayGame extends Application {
 		game.defineWinner();
 		//report winner to users.
 		announcement();
+		reset();
+		
+	}
+	public void invalidInput() {
+		Alert alert = new Alert(Alert.AlertType.WARNING);
+		alert.setTitle("WARNING");
+		alert.setContentText("your input is invalid");
+		alert.showAndWait();
 		reset();
 	}
 	
@@ -320,6 +342,7 @@ public class DisplayGame extends Application {
 			alert.setContentText("The Dealer has " + game.getDealer().getPoint() + " point.\n You have "
 					+ game.getUser().getPoint() + "\nThis is just a bad luck, try another. Good Luck next time");
 			result = alert.showAndWait();
+			reset();
 		}
 		else if (game.getUser().isWin()){
 			if(game.getUser().getCard(0).size() == 2) {
@@ -329,7 +352,18 @@ public class DisplayGame extends Application {
 			alert.setContentText("The Dealer has " + game.getDealer().getPoint() + " point.\n You have "
 					+ game.getUser().getPoint() + "\n.CONGRATULATION");
 			result = alert.showAndWait();	
+			reset();
 		}
+		else if (game.getUser().isStand() && game.getDealer().isStop()) {
+			alert.setHeaderText("DRWANING");
+			alert.setContentText("The Dealer has " + game.getDealer().getPoint() + " point.\n You have "
+					+ game.getUser().getPoint() + "\n.Good Luck Next time");
+			result = alert.showAndWait();	
+			reset();
+			
+		}
+		
+		
 	}
 	private void splitButtonHandler(Pane apane) {
 		game.getUser().doSplit();

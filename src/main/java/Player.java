@@ -8,16 +8,14 @@ public class Player {
 	protected ArrayList<ArrayList<Card>> cardOwning;
 	protected boolean iswin;
 	protected boolean split;
-	protected boolean changeAcesValue1;
-	protected boolean changeAcesValue2;
+	protected boolean changeAcesValue;
 	
 	public Player() {
 		cardOwning = new ArrayList<ArrayList<Card>>();
 		cardOwning.add(new ArrayList<Card>());
 		iswin = false;
 		split = false;
-		changeAcesValue1 = false;
-		changeAcesValue2 = false;
+		changeAcesValue = false;
 		point = 0;
 		splitPoint = 0;
 		hands = 1;
@@ -43,64 +41,41 @@ public class Player {
 	//add card to player' hand
 	public void addCard(Card c, int i) {
 		char str = c.getName().charAt(1);
-		if(str == '1' || str == 'J' || str == 'Q' || str == 'K') point += 10;
-		else if (str == 'A') {
-			if(i == 0) {
-				if(containsAces() == 0 && (point + 11 <= 21))	point += 11;
-				else point += 1;
-			
-				if(containsAces() == 1 && !changeAcesValue1) { 
-					point -= 9;
-					changeAcesValue1 = true;
+		if(i == 0) { point = addPoint(str,point);
+			if(point > 21 && containAces(0) > 0) {
+				if(!changeAcesValue) {
+					if(containAces(0) == 1) point -= 10;
+					else if (containAces(0)== 2) point -= 10;
+					changeAcesValue = true;
 				}
-				else if (containsAces() == 1) point += 1;
-				
-				if(containsAces() == 2) point += 1;
-				if(containsAces() == 3) point += 1;	
-			}
-			if(i == 1) {
-				if(containsAces() == 0 && (splitPoint + 11 <= 21))		splitPoint += 11;
-				else splitPoint += 1;
-				
-				if(containsAces() == 1 && !changeAcesValue2) { 
-					splitPoint -= 9;
-					changeAcesValue2 = true;
-				}
-				else if (containsAces() == 1) splitPoint += 1;
-				
-				if(containsAces() == 2) splitPoint += 1;
-				if(containsAces() == 3) splitPoint += 1;	
 			}
 		}
-		else {
-			if(i == 0) point += Character.getNumericValue(str);
-			else  splitPoint += Character.getNumericValue(str);
+		else { splitPoint = addPoint(str,splitPoint);
+			if(splitPoint > 21 && containAces(1) > 0) {
+				if(!changeAcesValue) {
+					if(containAces(1) == 1) splitPoint -= 10;
+					else if (containAces(1)== 2) point -= 10;
+					changeAcesValue = true;
+				}
+			}
 		}
 		cardOwning.get(i).add(c);
-		if(i == 0) {
-			if(!changeAcesValue1 && containsAces() == 1 && point > 21) {
-				point = Math.min(point-10, point);
-				changeAcesValue1 = true;
-				}
-		}
-		if(i == 1) {
-			if(!changeAcesValue2 && containsAces() == 1 && point > 21) {
-				point = Math.min(point-10, point);
-				changeAcesValue2 = true;
-				}
-		}
-		
 	}
-	//checking containsAces
-	public int containsAces() {
-		int num = 0;
-		for(int i =0; i < cardOwning.get(0).size(); i++) {
-			if((cardOwning.get(0).get(i).getName().equals("HA"))) num++;
-			else if (cardOwning.get(0).get(i).getName().equals("CA")) num++;
-			else if (cardOwning.get(0).get(i).getName().equals("DA")) num++;
-			else if (cardOwning.get(0).get(i).getName().equals("SA")) num++;
+	public int addPoint(char str, int i) {
+		if(str == '1' || str == 'J' || str == 'Q' || str == 'K') i += 10;
+		else if (str == 'A') {
+			if(i + 11 > 21) {
+				if(containAces(i) == 0) {
+					changeAcesValue = true;
+					i += 1;
+				}
+			}
+			else i += 11;
 		}
-		return num;
+		else {
+			i += Character.getNumericValue(str);
+		}
+		return i;
 	}
 	//do the split();
 	public void doSplit() {
@@ -125,6 +100,16 @@ public class Player {
 		else
 			return point;}
 	
-	
+	public int containAces(int u) {
+		int num = 0;
+		for(int i =0; i < cardOwning.get(u).size();i++) {
+			if(cardOwning.get(u).get(i).getName().equals("HA") ||
+				cardOwning.get(u).get(i).getName().equals("SA") ||
+				cardOwning.get(u).get(i).getName().equals("CA") ||
+				cardOwning.get(u).get(i).getName().equals("DA"))
+				num++;
+		}
+		return num;
+	}
 	
 }

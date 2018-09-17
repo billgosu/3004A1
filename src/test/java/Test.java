@@ -179,6 +179,7 @@ public class Test extends TestCase {
 		game.getUser().addCard(card1, 0);
 		game.getUser().addCard(card2, 0);
 		game.getUser().addCard(card3, 0);
+		System.out.println(game.getUser().getPoint());
 		assertTrue(20 == game.getUser().getPoint());
 		
 		game = new Game();
@@ -186,10 +187,12 @@ public class Test extends TestCase {
 		card1.setName("S9");
 		card2.setName("SA");
 		card3.setName("HA");
+		game.getUser().addCard(card, 0);
 		game.getUser().addCard(card1, 0);
 		game.getUser().addCard(card2, 0);
 		game.getUser().addCard(card3, 0);
-		game.getUser().addCard(card, 0);
+
+		System.out.println(game.getUser().getPoint());
 		assertTrue(19 == game.getUser().getPoint());
 		
 		game = new Game();
@@ -197,10 +200,11 @@ public class Test extends TestCase {
 		card1.setName("H5");
 		card2.setName("DA");
 		card3.setName("C10");
+		game.getUser().addCard(card, 0);
 		game.getUser().addCard(card1, 0);
 		game.getUser().addCard(card2, 0);
 		game.getUser().addCard(card3, 0);
-		game.getUser().addCard(card, 0);
+		System.out.println(game.getUser().getPoint());
 		assertTrue(17 == game.getUser().getPoint());
 		
 		

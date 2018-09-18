@@ -168,6 +168,7 @@ public class DisplayGame extends Application {
 			}
 			if(rept >= 2) {
 				invalidInput();
+				return;
 			}
 		}
 		
